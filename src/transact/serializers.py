@@ -1,8 +1,10 @@
-from django.db import transaction
-from rest_framework import serializers
 from uuid import uuid4
 
+from django.db import transaction
+from rest_framework import serializers
+
 from .models import Account, Transaction
+from .task import categorise_transactions
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -57,6 +59,9 @@ class CompositeCreationSerializer(serializers.Serializer):
             # Bulk create the transactions now that all necessary accounts exist
             batch_id = str(uuid4())
             Transaction.objects.bulk_create([Transaction(**data, batch_id=batch_id) for data in transactions_data])
+
+        # Trigger asynchronous categorization for this batch
+        categorise_transactions.delay(batch_id=batch_id)
 
         return {
             "total_transactions": len(accounts_data + transactions_data),

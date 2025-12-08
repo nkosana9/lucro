@@ -1,5 +1,7 @@
+celery
 Django
 djangorestframework
 django-filter
 markdown
 psycopg2-binary
+redis
