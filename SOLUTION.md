@@ -24,6 +24,10 @@ The Lucro system is a Django REST API for ingesting financial transactions, cate
 - `categorise_transactions(batch_id)` task processes only PENDING transactions in a batch
 - Should we not be able to categorise a transaction, the ingestion is marked as `FAILED` in the DB to support future error-handling strategies (Re-runs, DQM vallidation, etc)
 
+### 3. Infra
+- Added health checks to the docker containers
+- Volumes to persist data where appropriate
+
 
 ### 5. **Token Auth**
 Token auth was used for authentication. 
