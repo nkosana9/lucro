@@ -26,6 +26,49 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = ["transaction_id", "account_id", "amount", "iso_currency_code", "date", "merchant_name", "name"]
 
 
+class TopCategorySerializer(serializers.Serializer):
+    """Serializer for top spending categories."""
+
+    category = serializers.CharField()
+    total_spend = serializers.DecimalField(max_digits=12, decimal_places=2)
+    transaction_count = serializers.IntegerField()
+
+
+class ProcessingStatusSerializer(serializers.Serializer):
+    """Serializer for transaction processing status breakdown."""
+
+    pending = serializers.IntegerField()
+    processing = serializers.IntegerField()
+    completed = serializers.IntegerField()
+    failed = serializers.IntegerField()
+
+
+class DateRangeSerializer(serializers.Serializer):
+    """Serializer for date range."""
+
+    start = serializers.DateField()
+    end = serializers.DateField()
+
+
+class MetricsSerializer(serializers.Serializer):
+    """Serializer for account metrics."""
+
+    total_transactions = serializers.IntegerField()
+    total_spend = serializers.DecimalField(max_digits=12, decimal_places=2)
+    total_income = serializers.DecimalField(max_digits=12, decimal_places=2)
+    net = serializers.DecimalField(max_digits=12, decimal_places=2)
+
+
+class AccountSummarySerializer(serializers.Serializer):
+    """Serializer for account summary with metrics, categories, and processing status."""
+
+    account_id = serializers.CharField()
+    date_range = DateRangeSerializer()
+    metrics = MetricsSerializer()
+    top_categories = TopCategorySerializer(many=True)
+    processing_status = ProcessingStatusSerializer()
+
+
 class CompositeCreationSerializer(serializers.Serializer):
     accounts = AccountSerializer(many=True)
     transactions = TransactionSerializer(many=True)
