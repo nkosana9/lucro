@@ -65,18 +65,6 @@ services:
         condition: service_healthy
     env_file:
       - .env
-  
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: adminpassword
-    ports:
-      - "8080:80"
-    depends_on:
-      - postgres
-    env_file:
-      - .env
 
 volumes:
   postgres_data:

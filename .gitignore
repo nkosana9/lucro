@@ -76,6 +76,7 @@ staticfiles/
 # Env files (containing secrets and environment variables)
 .env
 .env.*
+!.env.example
 
 # Logs
 logs/
